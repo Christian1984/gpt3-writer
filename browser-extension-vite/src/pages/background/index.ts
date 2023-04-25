@@ -1,3 +1,4 @@
+import { MessageType } from "@src/shared/messageTypes";
 import { Buffer } from "buffer";
 
 console.log("positive parenting tweeter background script loaded");
@@ -9,8 +10,36 @@ const getApiKey = async (): Promise<string> => {
   return key ? Buffer.from(key, "base64").toString("utf-8") : "";
 };
 
+const sendMessage = (type: MessageType, content: string) => {
+  chrome.tabs.query(
+    {
+      active: true,
+      currentWindow: true,
+    },
+    (tabs) => {
+      const activeTab = tabs[0].id ?? 0;
+
+      chrome.tabs.sendMessage(
+        activeTab,
+        {
+          message: "inject",
+          type: type,
+          content: content,
+        },
+        (resp: { status: string }) => {
+          if (resp.status !== "success") {
+            console.warn("injection failed!");
+          }
+        }
+      );
+    }
+  );
+};
+
 const generate = async (topic: string) => {
   console.log("enter generate with topic:", topic);
+
+  sendMessage(MessageType.Generating, `generating tweet with topic ${topic}`);
 
   if (!topic) Promise.reject();
 
@@ -61,8 +90,11 @@ const generateCompletionAction = async (info: chrome.contextMenus.OnClickData) =
 
     const resp = await generate(selectionText);
     console.log(resp);
-  } catch (e) {
+    sendMessage(MessageType.Completion, resp);
+  } catch (e: unknown) {
+    console.warn(e);
     console.error(e);
+    sendMessage(MessageType.Error, `Something went wrong: ${e?.toString() ?? "no details"}`);
   }
 };
 
