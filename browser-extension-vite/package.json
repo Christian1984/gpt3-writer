@@ -2,7 +2,7 @@
   "name": "",
   "displayName": "tweet about positive parenting",
   "version": "1.1.0",
-  "description": "write positive parenting tweets about any topic",
+  "description": "highlight a topic, get a positive parenting related tweet",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,6 +14,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/chrome": "^0.0.233",
+    "buffer": "^6.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "webextension-polyfill": "^0.10.0"
