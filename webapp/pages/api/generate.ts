@@ -10,12 +10,10 @@ const openai = new OpenAIApi(configuration);
 
 const promptSystemMessage = "You are well respected, kind twitter user.";
 const promptPrefix =
-  // "Write a tweet thread about positive parenting from the perspective of a caring parent, specifically about the following topic:";
-  "Write a tweet about positive parenting from the perspective of a caring parent, specifically about the following topic:";
-// const promptPrefix = "Complete my sentence:";
+  "Write a tweet about positive parenting from the perspective of a loving parent, specifically about the following topic:";
 
 const generateAction = async (req: NextApiRequest, resp: NextApiResponse) => {
-  console.log(`API: ${req.body.userInput}`);
+  // console.log(`API: ${req.body.userInput}`);
 
   if (!req.body.userInput?.trim()) {
     resp.status(500).json({});
@@ -29,18 +27,13 @@ const generateAction = async (req: NextApiRequest, resp: NextApiResponse) => {
       { role: "user", content: promptPrefix },
       { role: "user", content: req.body.userInput },
     ],
+    temperature: 0.8,
+    max_tokens: 200,
   });
 
   const chatOutput = chatCompletion.data.choices.pop().message.content;
-  // const chatOutput = {
-  //   message: {
-  //     role: "assistant",
-  //     content:
-  //       '"Just spent some time experimenting with #chatgpt and I am blown away by its power! The advanced language capabilities and ability to generate meaningful responses is truly remarkable. Excited to see where this technology takes us in the future 🚀 #AI #MachineLearning"',
-  //   },
-  //   finish_reason: "stop",
-  //   index: 0,
-  // };
+  // const chatOutput =
+  //   '"Just spent some time experimenting with #chatgpt and I am blown away by its power! The advanced language capabilities and ability to generate meaningful responses is truly remarkable. Excited to see where this technology takes us in the future 🚀 #AI #MachineLearning"';
 
   resp.status(200).json({ output: chatOutput });
 };

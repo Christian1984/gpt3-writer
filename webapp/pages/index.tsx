@@ -57,7 +57,7 @@ const Home = () => {
             }}
           >
             <input
-              placeholder="start typing here"
+              placeholder="dealing with power struggles"
               className="prompt-box"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
@@ -66,7 +66,10 @@ const Home = () => {
             />
           </form>
           <div className="prompt-buttons">
-            <a className={"generate-button" + (isGenerating ? " loading" : "")} onClick={fetchApi}>
+            <a
+              className={"generate-button" + (isGenerating || userInput.trim().length == 0 ? " loading" : "")}
+              onClick={fetchApi}
+            >
               <div className="generate">
                 {!isGenerating && <p>Generate</p>}
                 {isGenerating && <span className="loader"></span>}
