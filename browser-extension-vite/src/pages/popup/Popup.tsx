@@ -8,7 +8,6 @@ export default function Popup(): JSX.Element {
 
   useEffect(() => {
     chrome.storage.local?.get("openai-key").then((res) => {
-      console.log(res["openai-key"]);
       const key = res["openai-key"];
       if (key) {
         setApiKey(Buffer.from(key, "base64").toString("utf-8"));
@@ -25,7 +24,7 @@ export default function Popup(): JSX.Element {
       <div className="flex flex-col items-center justify-center text-white">
         {showKeyInput && (
           <div className="w-full">
-            <p>To get started, add your OpenAI API Key!</p>
+            <p className="mb-3">To get started, add your OpenAI API Key!</p>
             <div className="flex w-full">
               <input
                 className="grow mr-3 text-black p-1"
