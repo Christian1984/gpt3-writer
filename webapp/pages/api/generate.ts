@@ -10,7 +10,7 @@ const openai = new OpenAIApi(configuration);
 
 const promptSystemMessage = "You are well respected, kind twitter user.";
 const promptPrefix =
-  "Write a tweet about positive parenting from the perspective of a loving parent, specifically about the following topic:";
+  "Write a tweet about positive parenting from the perspective of a loving parent about the following topic. Do not exceed 140 characters and use at least one hashtag!";
 
 const generateAction = async (req: NextApiRequest, resp: NextApiResponse) => {
   // console.log(`API: ${req.body.userInput}`);

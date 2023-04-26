@@ -99,7 +99,7 @@ body {
   gap: 10px;
   /* height: 150px; */
   overflow: hidden;
-  padding: 20px;
+  padding: 20px 0;
   position: relative;
   width: 610px;
   max-width: 1200px;
@@ -130,12 +130,11 @@ textarea {
   display: flex;
   place-content: center;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-around;
   flex: 0 0 auto;
   flex-flow: row nowrap;
   gap: 12px;
   height: min-content;
-  overflow: hidden;
   padding: 0px;
   position: relative;
   width: 100%;
@@ -183,13 +182,17 @@ textarea {
   flex-flow: column nowrap;
   gap: 10px;
   height: min-content;
-  overflow: hidden;
   padding: 16px 24px;
   position: relative;
   text-decoration: none;
-  width: min-content;
+  width: max-content;
   will-change: transform;
   cursor: pointer;
+  transition: all ease-out 100ms;
+}
+
+.generate-button:hover {
+  transform: scale(110%);
 }
 
 .generate {
@@ -204,6 +207,8 @@ textarea {
 .generate p {
   color: rgb(255, 255, 255);
   margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 .loading {
@@ -282,7 +287,6 @@ textarea {
   gap: 10px;
   height: min-content;
   max-width: 1200px;
-  overflow: hidden;
   position: relative;
   width: 100%;
 }
@@ -328,7 +332,9 @@ textarea {
 .output-content p {
   text-align: center;
   white-space: pre-line;
-  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  /* color: rgba(255, 255, 255, 0.5); */
+  color: white;
 }
 
 @media (min-width: 810px) and (max-width: 1199px) {

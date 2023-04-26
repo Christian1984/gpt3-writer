@@ -1,12 +1,39 @@
 import Head from "next/head";
 import Image from "next/image";
+import { BsCheck, BsFillClipboard2CheckFill, BsFillClipboard2Fill } from "react-icons/bs";
 import buildspaceLogo from "../assets/buildspace-logo.png";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Home = () => {
   const [userInput, setUserInput] = useState("");
   const [apiOutput, setApiOutput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [hasCopied, setHasCopied] = useState(false);
+
+  const outputActionsRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>(null);
+
+  useEffect(() => {
+    if (apiOutput && outputActionsRef.current) {
+      outputActionsRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [apiOutput]);
+
+  useEffect(() => {
+    if (hasCopied) {
+      timeoutRef.current = setTimeout(() => setHasCopied(false), 3000);
+    }
+
+    return () => {
+      if (timeoutRef.current != null) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+        setHasCopied(false);
+      }
+    };
+  }, [hasCopied]);
 
   const fetchApi = async () => {
     if (isGenerating) return;
@@ -71,7 +98,7 @@ const Home = () => {
               onClick={fetchApi}
             >
               <div className="generate">
-                {!isGenerating && <p>Generate</p>}
+                {!isGenerating && <p>generate</p>}
                 {isGenerating && <span className="loader"></span>}
               </div>
             </a>
@@ -80,11 +107,37 @@ const Home = () => {
             <div className="output">
               <div className="output-header-container">
                 <div className="output-header">
-                  <h3>Output</h3>
+                  <h3>here's your tweet</h3>
                 </div>
               </div>
               <div className="output-content">
                 <p>{apiOutput}</p>
+              </div>
+              <div className="prompt-buttons" ref={outputActionsRef}>
+                <a
+                  className={"generate-button" + (isGenerating || userInput.trim().length == 0 ? " loading" : "")}
+                  onClick={() => {
+                    const textarea = document.createElement("textarea");
+                    textarea.value = apiOutput;
+                    textarea.select();
+                    navigator.clipboard.writeText(textarea.value);
+
+                    setHasCopied(true);
+                  }}
+                >
+                  <div className="generate">
+                    <p>
+                      {hasCopied && <BsCheck />}
+                      {!hasCopied && (
+                        <>
+                          <BsFillClipboard2Fill />
+                          &nbsp;
+                          <span>copy to clipboard</span>
+                        </>
+                      )}
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           )}
